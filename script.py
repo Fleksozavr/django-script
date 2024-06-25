@@ -4,10 +4,10 @@ from datacenter.models import Mark, Schoolkid, Chastisement, Commendation, Lesso
 
 
 def fix_marks(child_object):
-    child = Mark.objects.filter(schoolkid=child_object)
-    bad_marks = child.filter(points__in=[2,3])
+    bad_marks = Mark.objects.filter(schoolkid=child_object, points__in=[2, 3])
     if bad_marks.count() == 0:
         print('Плохих оценок не найдено')
+        return
     else:
         print(f'Найдено плохих оценок: {bad_marks.count()}')
     try:
