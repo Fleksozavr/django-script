@@ -63,7 +63,7 @@ def fix_commendation(child_object, subject_title):
 def fix_menu():
     name = input('Введите Фамилию Имя ученика которого хотите найти в базе данных: ')
     try:     
-        schoolkid_object = Schoolkid.objects.get(full_name__contains=name)
+        schoolkid_object = get_object_or_404(Schoolkid, full_name__contains=name)
         if schoolkid_object:
             print('Ученик был успешно найден!')
             print("""
@@ -82,5 +82,7 @@ def fix_menu():
                 fix_commendation(schoolkid_object, subject_title)   
             else:
                 print('Введено некорректное значение')    
+    except Schoolkid.MultipleObjectsReturned:
+        print("Было найдено более одного ученика.")
     except Schoolkid.DoesNotExist:
-        print(f'Не было найдено ни одного ученика.')
+        print('Не было найдено ни одного ученика')
