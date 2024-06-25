@@ -21,18 +21,12 @@ def fix_marks(child_object):
         print(f'Error: {err}')
 
 
-def fix_chastisements(chlid_object):
-    chastisements = Chastisement.objects.filter(schoolkid=chlid_object)
-    if chastisements.count() == 0:
-        print('Замечаний не найдено')
-    else:
-        print(f'Найдено {chastisements.count()} замечаний')
-    try:
-        for chastisement in chastisements:
-            chastisement.delete()
-        print(f'{chastisements.count()} замечаний было успешно удалено.')
-    except Exception as err:
-        print(f'Error: {err}') 
+def fix_chastisements(child_object):
+    try:       
+        deleted_count, _ = Chastisement.objects.filter(schoolkid=child_object).delete()
+        print(f'{deleted_count} замечаний было успешно удалено.')
+    except Chastisement.DoesNotExist:
+        print('Замечаний нет')
 
 
 def fix_commendation(child_object, subject_title):
