@@ -36,7 +36,8 @@ def fix_chastisements(chlid_object):
 
 
 def fix_commendation(child_object, subject_title):
-    subject = Subject.objects.get(title=subject_title, year_of_study=child_object.year_of_study)
+    global COMMENDATIONS_LIST
+    subject = get_object_or_404(Subject, title=subject_title, year_of_study=child_object.year_of_study)
 
     lesson = Lesson.objects.filter(
         subject=subject,
@@ -45,19 +46,20 @@ def fix_commendation(child_object, subject_title):
     ).order_by('-date').first()
     if not lesson:
          print('Урок по данному предмету для ученика не найден.')
+         return
     try:
-        commendations_list = ['Ты сегодня прыгнул выше головы!', 'Мы с тобой не зря поработали!',
-                               'Отлично!', 'Как всегда лучший из лучших', 'Повелитель вселенной']
         Commendation.objects.create(
-            text=random.choice(commendations_list),
+            text=random.choice(COMMENDATIONS_LIST),
             created=lesson.date,
             schoolkid=child_object,
             subject=lesson.subject,
             teacher=lesson.teacher
         )
         print('Похвала успешно поставлена.')
-    except Exception as err:
-        print(f'Error:{err}')
+    except Subject.MultipleObjectsReturned:
+        print('Было найдено несколько предметов по указанным параметрам.')
+    except Subject.DoesNotExist:
+        print('Не было найдено ни одной записи в базе данных.')
 
 
 def fix_menu():
