@@ -3,6 +3,9 @@ import random
 from datacenter.models import Mark, Schoolkid, Chastisement, Commendation, Lesson, Subject
 
 
+COMMENDATIONS_LIST = ['Good job!', 'Well played.', 'Very Nice!', 'Лучший из лучших', 'Король.', 'Как же он силен, как же он умен']
+
+
 def fix_marks(child_object):
     bad_marks = Mark.objects.filter(schoolkid=child_object, points__in=[2, 3])
     if bad_marks.count() == 0:
