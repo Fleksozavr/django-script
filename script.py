@@ -5,17 +5,16 @@ from datacenter.models import Mark, Schoolkid, Chastisement, Commendation, Lesso
 
 def fix_marks(child_object):
     bad_marks = Mark.objects.filter(schoolkid=child_object, points__in=[2, 3])
-    if bad_marks.count() == 0:
+
+    bad_marks_count = bad_marks.count()
+    if bad_marks_count == 0:
         print('Плохих оценок не найдено')
         return
     else:
-        print(f'Найдено плохих оценок: {bad_marks.count()}')
+        print(f'Найдено плохих оценок: {bad_marks_count}')
+
     try:
-        fixmarks_counter = 0
-        for badmark in bad_marks:
-            badmark.points = 5
-            badmark.save()
-            fixmarks_counter += 1
+        fixmarks_counter = bad_marks.update(points=5)
         print(f'{fixmarks_counter} плохих оценок было успешно удалено.')
     except Exception as err:
         print(f'Error: {err}')
