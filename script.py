@@ -3,9 +3,6 @@ import random
 from datacenter.models import Mark, Schoolkid, Chastisement, Commendation, Lesson, Subject
 
 
-COMMENDATIONS_LIST = ['Good job!', 'Well played.', 'Very Nice!', 'Лучший из лучших', 'Король.', 'Как же он силен, как же он умен']
-
-
 def fix_marks(child_object):
     bad_marks = Mark.objects.filter(schoolkid=child_object, points__in=[2, 3])
     if bad_marks.count() == 0:
@@ -32,8 +29,7 @@ def fix_chastisements(child_object):
         print('Замечаний нет')
 
 
-def fix_commendation(child_object, subject_title):
-    global COMMENDATIONS_LIST
+def fix_commendation(child_object, subject_title, commendations_list):
     subject = get_object_or_404(Subject, title=subject_title, year_of_study=child_object.year_of_study)
 
     lesson = Lesson.objects.filter(
@@ -78,7 +74,9 @@ def fix_menu():
                 fix_chastisements(schoolkid_object)
             elif choice == 3:
                 subject_title = input('Введите название урока: ')
-                fix_commendation(schoolkid_object, subject_title)   
+                commendations_list = ['Good job!', 'Well played.', 'Very Nice!', 'Лучший из лучших', 
+                                      'Король.', 'Как же он силен, как же он умен']
+                fix_commendation(schoolkid_object, subject_title, commendations_list)   
             else:
                 print('Введено некорректное значение')    
     except Schoolkid.MultipleObjectsReturned:
