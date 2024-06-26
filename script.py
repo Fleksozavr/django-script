@@ -42,17 +42,15 @@ def fix_commendation(child_object, subject_title, commendations_list):
          return
     try:
         Commendation.objects.create(
-            text=random.choice(COMMENDATIONS_LIST),
+            text=random.choice(commendations_list),
             created=lesson.date,
             schoolkid=child_object,
             subject=lesson.subject,
             teacher=lesson.teacher
         )
         print('Похвала успешно поставлена.')
-    except Subject.MultipleObjectsReturned:
-        print('Было найдено несколько предметов по указанным параметрам.')
-    except Subject.DoesNotExist:
-        print('Не было найдено ни одной записи в базе данных.')
+    except Exceptrion as err:
+        print(f"Error:, {err}")
 
 
 def fix_menu():
